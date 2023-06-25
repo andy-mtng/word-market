@@ -1,0 +1,10 @@
+- Typescript
+- Axios
+- Better overall app structure
+- Better user experience
+- Profile management (change password, reset password)
+- Stripe payments
+- Better data handling (fetch, render, save, etc.)
+- Eslint prettier
+- React hook form, zod
+- Better image loading and storage
