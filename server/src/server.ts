@@ -1,7 +1,10 @@
+// Imports
 require('dotenv').config();
 import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 const app = express();
+
+// Constants
 const port = 5000;
 
 app.get("/hello", (req: Request, res: Response) => {
@@ -12,6 +15,7 @@ app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });
 
+// Connect to database
 mongoose.connect(process.env.MONGODB_URI as string)
     .then(() => {
         console.log("Connected to MongoDB");
