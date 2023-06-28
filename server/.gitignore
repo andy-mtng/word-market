@@ -1,3 +1,4 @@
 node_modules
 .env
 src/databaseUtils/databaseSecret.ts
+src/databaseUtils/test.ts
