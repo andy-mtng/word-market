@@ -3,70 +3,56 @@ const Schema = mongoose.Schema;
 
 const bestSellerRankSchema = new Schema({
     category: {
-        type: String,
-        required: true,
+        type: String
     },
     rank: {
-        type: Number,
-        required: true,
-    },
+        type: Number
+    }
 });
 
 const bookSchema = new Schema({
     ISBN10: {
-        type: String,
-        required: true,
+        type: String
     },
     brand: {
-        type: String,
-        required: true,
+        type: String
     },
     title: {
-        type: String,
-        required: true,
+        type: String
     },
     price: {
-        // Can be a number or null
-        // Did not set required to true to allow null values
-        type: mongoose.Schema.Types.Number,
+        type: mongoose.Schema.Types.Number
     },
     rating: {
         type: Number,
-        required: true,
-        default: 0,
+        default: 0
     },
     image: {
-        type: String,
-        required: true,
+        type: String
     },
     categories: {
-        type: [String],
-        required: true,
+        type: [String]
     },
     reviews: {
         type: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Review",
-            },
-        ],
+                ref: "Review"
+            }
+        ]
     },
     itemWeight: {
-        type: String,
-        required: true,
+        type: String
     },
     productDimensions: {
-        type: String,
-        required: true,
+        type: String
     },
     sellerName: {
-        type: String,
-        required: true,
+        type: String
     },
     bestSellersRank: {
-        type: [bestSellerRankSchema],
-        required: true,
-    },
+        type: [bestSellerRankSchema]
+    }
 });
 
 const BookModel = mongoose.model("Book", bookSchema);
