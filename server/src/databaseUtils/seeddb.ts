@@ -1,6 +1,8 @@
 import fs from "fs";
 import { promisify } from "util";
+import mongoose, { ConnectOptions } from "mongoose";
 import BookModel from "../models/BookModel";
+import connectionString from "./dataBaseConnectionString";
 
 const readFileAsync = promisify(fs.readFile);
 
@@ -67,19 +69,31 @@ const processBooks = (): void => {
                 return newBook;
             });
             console.log("booksToSave length:", booksToSave.length);
-            // BookModel.insertMany(booksToSave)
-            //     .then(() => {
-            //         console.log("Finished saving books to database");
-            //     })
-            //     .catch((error: Error) => {
-            //         console.log("Error saving books to database", error);
-            //     });
+            BookModel.insertMany(booksToSave)
+                .then(() => {
+                    console.log("Finished saving books to database");
+                })
+                .catch((error: Error) => {
+                    console.log("Error saving books to database", error);
+                });
         })
         .catch((error) => {
             console.log("Error getting booksArray", error);
         });
 };
 
-processBooks();
+mongoose
+    .connect(connectionString, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        dbName: "wordmarket-db"
+    } as ConnectOptions)
+    .then(() => {
+        console.log("Connected to MongoDB");
+        processBooks();
+    })
+    .catch((error) => {
+        console.log("Error connecting to MongoDB", error);
+    });
 
 export default processBooks;
