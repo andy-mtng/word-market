@@ -68,7 +68,6 @@ const processBooks = (): void => {
                 };
                 return newBook;
             });
-            console.log("booksToSave length:", booksToSave.length);
             BookModel.insertMany(booksToSave)
                 .then(() => {
                     console.log("Finished saving books to database");

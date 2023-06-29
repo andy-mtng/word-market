@@ -2,7 +2,6 @@
 require("dotenv").config();
 import express, { Request, Response } from "express";
 import mongoose, { ConnectOptions } from "mongoose";
-import processBooks from "./databaseUtils/seeddb";
 const app = express();
 
 // Constants
@@ -24,13 +23,11 @@ mongoose
     )
     .then(() => {
         console.log("Connected to MongoDB");
-        processBooks();
     })
     .catch((error) => {
         console.log("Error connecting to MongoDB", error);
     });
 
 app.listen(port, () => {
-    console.log("process.env", process.env.MONGODB_URI);
     console.log(`App listening on port ${port}`);
 });
