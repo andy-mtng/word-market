@@ -9,16 +9,12 @@ const login = (req: Request, res: Response) => {
     UserModel.findOne({ email: email }).then((foundUser: User) => {
         bcrypt.compare(password, foundUser.password).then((result: boolean) => {
             if (result === true) {
-                const token = jwt.sign(
-                    { _id: foundUser._id },
-                    process.env.SECRET as string,
-                    { expiresIn: "3d" }
-                );
+                const token = jwt.sign({ _id: foundUser._id }, process.env.SECRET as string, {
+                    expiresIn: "3d"
+                });
                 return res.status(200).json({ email: email, token: token });
             } else {
-                return res
-                    .status(400)
-                    .json({ error: "Authentication failed." });
+                return res.status(400).json({ error: "Authentication failed." });
             }
         });
     });
@@ -43,9 +39,11 @@ const signup = (req: Request, res: Response) => {
                 .save()
                 .then(() => {
                     console.log("Successfully saved new user to database");
+                    res.status(200).json({ message: "Successfully created account" });
                 })
                 .catch((error: Error) => {
                     console.log("Error saving new user to database", error);
+                    throw new Error();
                 });
         })
         .catch((error: Error) => {

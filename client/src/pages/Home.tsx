@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar";
-
 function Home(): JSX.Element {
     return (
         <div>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import DefaultPfp from "../assets/default_pfp.png";
+// import DefaultPfp from "../assets/default_pfp.png";
 
 function Navbar(): JSX.Element {
     return (
