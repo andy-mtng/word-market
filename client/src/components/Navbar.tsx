@@ -6,7 +6,7 @@ function Navbar(): JSX.Element {
         <nav className="flex items-center justify-between px-12 py-6">
             <Link to="/">
                 <div className="flex items-center gap-2">
-                    <div className="font-merriweather flex h-9 w-9 items-center justify-center rounded-md bg-green-900 pt-1 text-2xl font-bold text-white">
+                    <div className="font-merriweather flex h-9 w-9 items-center justify-center rounded-md bg-green-800 pt-1 text-2xl font-bold text-white">
                         W
                     </div>
                     <h1 className="text-2xl font-bold">WordMarket</h1>
