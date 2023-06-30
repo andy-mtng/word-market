@@ -2,14 +2,19 @@
 require("dotenv").config();
 import express, { Request, Response } from "express";
 import mongoose, { ConnectOptions } from "mongoose";
+const authRouter = require("./routes/authRouter");
+import cors from "cors";
 const app = express();
 
 // Constants
 const port = 5000;
 
-app.get("/hello", (req: Request, res: Response) => {
-    res.status(200).json({ message: "Hello world" });
-});
+// Middleware
+app.use(express.json());
+app.use(cors());
+
+// Routes
+app.use(authRouter);
 
 // Connect to database
 mongoose
