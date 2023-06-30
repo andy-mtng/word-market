@@ -8,3 +8,4 @@
 - Eslint prettier
 - React hook form, zod
 - Better image loading and storage
+- Add Yup or another client side validation 
