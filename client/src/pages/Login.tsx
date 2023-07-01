@@ -8,6 +8,7 @@ interface Inputs {
 }
 
 function Login(): JSX.Element {
+    axios.defaults.withCredentials = true;
     const {
         register,
         handleSubmit,

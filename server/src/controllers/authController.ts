@@ -12,7 +12,13 @@ const login = (req: Request, res: Response) => {
                 const token = jwt.sign({ _id: foundUser._id }, process.env.SECRET as string, {
                     expiresIn: "3d"
                 });
-                return res.status(200).json({ email: email, token: token });
+
+                // Set JWT in browser cookies
+                res.cookie("jwt", token, {
+                    httpOnly: true
+                });
+
+                return res.status(200).json({ message: "Login successful" });
             } else {
                 return res.status(400).json({ error: "Authentication failed." });
             }

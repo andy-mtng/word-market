@@ -4,14 +4,16 @@ import express from "express";
 import mongoose, { ConnectOptions } from "mongoose";
 import authRouter from "./routes/authRoutes";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 const app = express();
 
 // Constants
 const port = 5000;
 
 // Middleware
+app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 // Routes
 app.use("/auth", authRouter);
