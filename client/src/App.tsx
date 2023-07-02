@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import useAuthenticated from "./hooks/useAuthenticated";
 
 // Pages
 import Home from "./pages/Home";
@@ -9,6 +10,8 @@ import Explore from "./pages/Explore";
 import Layout from "./pages/Layout";
 
 function App() {
+    const authenticated = useAuthenticated();
+
     return (
         <BrowserRouter>
             <Layout>
@@ -17,7 +20,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/explore" element={<Explore />} />
-                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile" element={authenticated ? <Profile /> : <Home />} />
                 </Routes>
             </Layout>
         </BrowserRouter>

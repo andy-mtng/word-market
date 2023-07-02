@@ -1,6 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import useNotificationContext from "../hooks/useNotificationContext";
+
 import { Link } from "react-router-dom";
+axios.defaults.withCredentials = true;
 
 interface Inputs {
     email: string;
@@ -15,6 +19,8 @@ function Login(): JSX.Element {
         reset,
         formState: { errors }
     } = useForm<Inputs>();
+    const navigate = useNavigate();
+    const { setShowNotification, setNotificationInfo } = useNotificationContext();
 
     const onSubmit: SubmitHandler<Inputs> = (formData) => {
         console.log("Client-side formData", formData);
@@ -22,6 +28,11 @@ function Login(): JSX.Element {
             .post("http://localhost:5000/auth/login", formData)
             .then((response) => {
                 console.log(response);
+                if (response.statusText === "OK") {
+                    setShowNotification(true);
+                    setNotificationInfo({ message: "Successfully logged in", type: "success" });
+                    navigate("/");
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -49,7 +60,7 @@ function Login(): JSX.Element {
                     <label htmlFor="password">Password</label>
                     <input
                         type="password"
-                        className="border border-gray-400"
+                        className=" border border-gray-400"
                         id="password"
                         {...register("password", { required: true })}
                     />

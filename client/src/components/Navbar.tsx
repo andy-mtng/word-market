@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
-// import DefaultPfp from "../assets/default_pfp.png";
+import useAuthenticated from "../hooks/useAuthenticated";
+import useLogout from "../hooks/useLogout";
 
 function Navbar(): JSX.Element {
+    const authenticated: boolean = useAuthenticated();
+    const { logout } = useLogout();
+    console.log(authenticated);
+
     return (
         <nav className="flex items-center justify-between px-12 py-6">
             <Link to="/">
@@ -16,19 +21,26 @@ function Navbar(): JSX.Element {
                 <li>
                     <Link to="/explore">Explore</Link>
                 </li>
-                <li>
-                    <Link to="/profile">
-                        <div className="box-border h-10 w-10 rounded-md bg-gray-300"></div>
-                    </Link>
-                </li>
-                <li>
-                    <Link
-                        className="rounded-sm bg-green-700 px-6 py-2 text-white shadow-sm"
-                        to="/login"
-                    >
-                        Login
-                    </Link>
-                </li>
+                {authenticated && (
+                    <div className="display flex gap-4">
+                        <li>
+                            <Link to="/profile">
+                                <div className="box-border h-10 w-10 rounded-md bg-gray-300"></div>
+                            </Link>
+                        </li>
+                        <button onClick={logout}>Logout</button>
+                    </div>
+                )}
+                {!authenticated && (
+                    <li>
+                        <Link
+                            className="rounded-sm bg-green-700 px-6 py-2 text-white shadow-sm"
+                            to="/login"
+                        >
+                            Login
+                        </Link>
+                    </li>
+                )}
             </ul>
         </nav>
     );
