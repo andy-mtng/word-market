@@ -1,16 +1,34 @@
-const { Schema, model } = require("mongoose");
-// const bcrypt = require("bcrypt");
+import mongoose, { Schema, model, Types, Document, Model } from "mongoose";
+import IUser from "../types/IUser";
 
-// interface UserMethods {
-//     login(): void;
-//     signup(): void;
-// }
-
-const userSchema = new Schema({
+const userSchema = new Schema<IUser>({
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true,
         unique: true
+    },
+    cart: {
+        type: [
+            {
+                bookId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Book"
+                },
+                quantity: {
+                    type: Number,
+                    default: 0
+                }
+            }
+        ],
+        default: []
     },
     password: {
         type: String,
@@ -22,31 +40,5 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.statics.login = function (email: string, password: string): void {};
-
-// userSchema.statics.signup = function (
-//     email: string,
-//     password: string
-// ): Promise<User | null> {
-//     const saltRounds = 10;
-//     let user: User;
-//     bcrypt.hash(password, saltRounds, (err: Error, hash: string) => {
-//         if (err) {
-//             return null;
-//         }
-
-//         // Store hash in your password DB.
-//         user = this.create({
-//             email: email,
-//             password: hash,
-//             profileImage: {
-//                 data: "",
-//                 contentType: ""
-//             }
-//         });
-//         return user;
-//     });
-// };
-
-const UserModel = model("User", userSchema);
+const UserModel = model<IUser>("User", userSchema);
 export default UserModel;

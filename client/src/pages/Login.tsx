@@ -25,7 +25,7 @@ function Login(): JSX.Element {
     const onSubmit: SubmitHandler<Inputs> = (formData) => {
         console.log("Client-side formData", formData);
         axios
-            .post("http://localhost:5000/auth/login", formData)
+            .post("auth/login", formData)
             .then((response) => {
                 console.log(response);
                 if (response.statusText === "OK") {
@@ -35,7 +35,8 @@ function Login(): JSX.Element {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                setShowNotification(true);
+                setNotificationInfo({ message: error.message, type: "error" });
             })
             .finally(() => {
                 reset();

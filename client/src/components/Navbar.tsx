@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 import useAuthenticated from "../hooks/useAuthenticated";
-import useLogout from "../hooks/useLogout";
 
 function Navbar(): JSX.Element {
     const authenticated: boolean = useAuthenticated();
-    const { logout } = useLogout();
-    console.log(authenticated);
+    console.log("authenticated", authenticated);
 
     return (
         <nav className="flex items-center justify-between px-12 py-6">
@@ -28,7 +26,6 @@ function Navbar(): JSX.Element {
                                 <div className="box-border h-10 w-10 rounded-md bg-gray-300"></div>
                             </Link>
                         </li>
-                        <button onClick={logout}>Logout</button>
                     </div>
                 )}
                 {!authenticated && (

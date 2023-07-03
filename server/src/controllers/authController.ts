@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
+import { Document } from "mongoose";
 import UserModel from "../models/UserModel";
 import bcrypt from "bcrypt";
-import User from "../types/User";
+import UserDocument from "../types/UserDocument";
 import jwt from "jsonwebtoken";
 
 const login = (req: Request, res: Response) => {
     const { email, password } = req.body;
-    UserModel.findOne({ email: email }).then((foundUser: User) => {
-        bcrypt.compare(password, foundUser.password).then((result: boolean) => {
+    UserModel.findOne({ email: email }).then((foundUser: UserDocument | null) => {
+        bcrypt.compare(password, foundUser?.password as string).then((result: boolean) => {
             if (result === true) {
-                const token = jwt.sign({ _id: foundUser._id }, process.env.SECRET as string, {
+                const token = jwt.sign({ _id: foundUser?._id }, process.env.SECRET as string, {
                     expiresIn: "3d"
                 });
 
@@ -31,11 +32,13 @@ const login = (req: Request, res: Response) => {
 
 const signup = (req: Request, res: Response) => {
     const saltRounds = 10;
-    const { email, password } = req.body;
+    const { email, password, firstName, lastName } = req.body;
     bcrypt
         .hash(password, saltRounds)
         .then((hash: string) => {
             const newUser = new UserModel({
+                firstName: firstName,
+                lastName: lastName,
                 email: email,
                 password: hash,
                 profileImage: {

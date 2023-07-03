@@ -17,8 +17,8 @@ function App() {
             <Layout>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/login" element={authenticated ? <Home /> : <Login />} />
+                    <Route path="/signup" element={authenticated ? <Home /> : <Signup />} />
                     <Route path="/explore" element={<Explore />} />
                     <Route path="/profile" element={authenticated ? <Profile /> : <Home />} />
                 </Routes>
