@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
-import useAuthenticated from "../hooks/useAuthenticated";
-
+import useUserContext from "../hooks/useUserContext";
 function Navbar(): JSX.Element {
-    const authenticated: boolean = useAuthenticated();
-    console.log("authenticated", authenticated);
+    const { user } = useUserContext();
 
     return (
         <nav className="flex items-center justify-between px-12 py-6">
@@ -19,7 +17,7 @@ function Navbar(): JSX.Element {
                 <li>
                     <Link to="/explore">Explore</Link>
                 </li>
-                {authenticated && (
+                {user && (
                     <div className="display flex gap-4">
                         <li>
                             <Link to="/profile">
@@ -28,7 +26,7 @@ function Navbar(): JSX.Element {
                         </li>
                     </div>
                 )}
-                {!authenticated && (
+                {!user && (
                     <li>
                         <Link
                             className="rounded-sm bg-green-700 px-6 py-2 text-white shadow-sm"

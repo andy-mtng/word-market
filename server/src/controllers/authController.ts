@@ -18,15 +18,29 @@ const login = (req: Request, res: Response) => {
                 res.cookie("jwt", token, {
                     httpOnly: true
                 });
-                res.cookie("authenticated", true);
 
-                return res
-                    .status(200)
-                    .json({ message: "Login successful", user: { email: email } });
+                return res.status(200).json({
+                    message: "Login successful",
+                    user: {
+                        firstName: foundUser?.firstName,
+                        lastName: foundUser?.lastName,
+                        email: email,
+                        cart: foundUser?.cart,
+                        profileImage: foundUser?.profileImage
+                    }
+                });
             } else {
                 return res.status(400).json({ error: "Authentication failed." });
             }
         });
+    });
+};
+
+const logout = (req: Request, res: Response) => {
+    // Removes the jwt cookie from the client
+    res.cookie("jwt", "", { expires: new Date(0), httpOnly: true });
+    return res.status(200).json({
+        message: "Successfully logged out"
     });
 };
 
@@ -66,4 +80,4 @@ const signup = (req: Request, res: Response) => {
         });
 };
 
-export { login, signup };
+export { login, signup, logout };

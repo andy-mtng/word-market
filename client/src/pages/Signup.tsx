@@ -18,30 +18,12 @@ function Signup(): JSX.Element {
         reset,
         formState: { errors }
     } = useForm<Inputs>();
-    const navigate = useNavigate();
-    const { setShowNotification, setNotificationInfo } = useNotificationContext();
     const { signup, isLoading } = useSignup();
 
     const onSubmit: SubmitHandler<Inputs> = (formData) => {
         signup(formData).finally(() => {
             reset();
         });
-        // axios
-        //     .post("auth/signup", formData)
-        //     .then((response) => {
-        //         console.log(response);
-        //         if (response.statusText === "OK") {
-        //             navigate("/login");
-        //         }
-        //     })
-        //     .catch((error) => {
-        //         setShowNotification(true);
-        //         setNotificationInfo({ message: error.message, type: "error" });
-        //         console.log(error);
-        //     })
-        //     .finally(() => {
-        //         reset();
-        //     });
     };
 
     return (

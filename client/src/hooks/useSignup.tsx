@@ -3,13 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useNotificationContext from "./useNotificationContext";
-
-interface Inputs {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-}
+import SignupInputs from "../types/SignupInputs";
 
 export const useSignup = () => {
     // const [error, setError] = useState(null);
@@ -18,7 +12,7 @@ export const useSignup = () => {
     const { setShowNotification, setNotificationInfo } = useNotificationContext();
     const navigate = useNavigate();
 
-    const signup = (formData: Inputs) => {
+    const signup = (formData: SignupInputs) => {
         setIsLoading(true);
         // setError(null);
 

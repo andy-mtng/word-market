@@ -20,7 +20,7 @@ interface User {
 
 interface User2 {
     user: User | null;
-    setUser: (user: User) => void;
+    setUser: (user: User | null) => void;
 }
 
 interface userContextProviderProps {
@@ -45,6 +45,8 @@ const UserContextProvider = ({ children }: userContextProviderProps) => {
     const [user, setUser] = useState<User | null>(
         JSON.parse(localStorage.getItem("user") as string) || null
     );
+
+    console.log(user);
 
     return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };

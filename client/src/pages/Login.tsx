@@ -2,14 +2,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useNotificationContext from "../hooks/useNotificationContext";
+import { useLogin } from "../hooks/useLogin";
 
 import { Link } from "react-router-dom";
+import LoginInputs from "../types/LoginInputs";
 axios.defaults.withCredentials = true;
-
-interface Inputs {
-    email: string;
-    password: string;
-}
 
 function Login(): JSX.Element {
     axios.defaults.withCredentials = true;
@@ -18,29 +15,14 @@ function Login(): JSX.Element {
         handleSubmit,
         reset,
         formState: { errors }
-    } = useForm<Inputs>();
-    const navigate = useNavigate();
-    const { setShowNotification, setNotificationInfo } = useNotificationContext();
+    } = useForm<LoginInputs>();
+    const { login, isLoading } = useLogin();
 
-    const onSubmit: SubmitHandler<Inputs> = (formData) => {
+    const onSubmit: SubmitHandler<LoginInputs> = (formData) => {
         console.log("Client-side formData", formData);
-        axios
-            .post("auth/login", formData)
-            .then((response) => {
-                console.log(response);
-                if (response.statusText === "OK") {
-                    setShowNotification(true);
-                    setNotificationInfo({ message: "Successfully logged in", type: "success" });
-                    navigate("/");
-                }
-            })
-            .catch((error) => {
-                setShowNotification(true);
-                setNotificationInfo({ message: error.message, type: "error" });
-            })
-            .finally(() => {
-                reset();
-            });
+        login(formData).finally(() => {
+            reset();
+        });
     };
 
     return (
