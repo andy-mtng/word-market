@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useNotificationContext from "../hooks/useNotificationContext";
+import { useSignup } from "../hooks/useSignup";
 
 interface Inputs {
     firstName: string;
@@ -19,24 +20,28 @@ function Signup(): JSX.Element {
     } = useForm<Inputs>();
     const navigate = useNavigate();
     const { setShowNotification, setNotificationInfo } = useNotificationContext();
+    const { signup, isLoading } = useSignup();
 
     const onSubmit: SubmitHandler<Inputs> = (formData) => {
-        axios
-            .post("auth/signup", formData)
-            .then((response) => {
-                console.log(response);
-                if (response.statusText === "OK") {
-                    navigate("/login");
-                }
-            })
-            .catch((error) => {
-                setShowNotification(true);
-                setNotificationInfo({ message: error.message, type: "error" });
-                console.log(error);
-            })
-            .finally(() => {
-                reset();
-            });
+        signup(formData).finally(() => {
+            reset();
+        });
+        // axios
+        //     .post("auth/signup", formData)
+        //     .then((response) => {
+        //         console.log(response);
+        //         if (response.statusText === "OK") {
+        //             navigate("/login");
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         setShowNotification(true);
+        //         setNotificationInfo({ message: error.message, type: "error" });
+        //         console.log(error);
+        //     })
+        //     .finally(() => {
+        //         reset();
+        //     });
     };
 
     return (

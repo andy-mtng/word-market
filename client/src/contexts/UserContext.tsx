@@ -1,25 +1,52 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
-// interface ProfilePicture {
-//     data: string;
-//     contentType: string;
-// }
+interface ProfilePicture {
+    data: string;
+    contentType: string;
+}
 
-// interface User {
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     profilePicture: ProfilePicture;
-// }
+interface Cart {
+    bookId: string;
+    quantity: number;
+}
 
-// const userContext = createContext<User>({
-//     firstName: "",
-//     lastName: "",
-//     email: "",
-//     profilePicture: {
-//         data: "",
-//         contentType: ""
-//     }
-// });
+interface User {
+    firstName: string;
+    lastName: string;
+    email: string;
+    cart: Cart[];
+    profilePicture: ProfilePicture;
+}
 
-export default "";
+interface User2 {
+    user: User | null;
+    setUser: (user: User) => void;
+}
+
+interface userContextProviderProps {
+    children: React.ReactNode;
+}
+
+const UserContext = createContext<User2>({
+    user: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        cart: [],
+        profilePicture: {
+            data: "",
+            contentType: ""
+        }
+    },
+    setUser: () => {}
+});
+
+const UserContextProvider = ({ children }: userContextProviderProps) => {
+    const [user, setUser] = useState<User | null>(
+        JSON.parse(localStorage.getItem("user") as string) || null
+    );
+
+    return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
+};
+
+export { UserContext, UserContextProvider };
