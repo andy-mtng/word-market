@@ -1,3 +1,5 @@
+// Run on the command line using npx ts-node seeddb.ts
+
 import fs from "fs";
 import { promisify } from "util";
 import mongoose, { ConnectOptions } from "mongoose";
@@ -23,6 +25,7 @@ type Book = {
     itemWeight: string;
     reviews: any[];
     productDimensions: string;
+    amazonLink: string;
     sellerName: string;
     bestSellersRank: BestSellerRank[];
 };
@@ -63,6 +66,7 @@ const processBooks = (): void => {
                     itemWeight: bookData.item_weight ?? null,
                     productDimensions: bookData.productDimensions ?? null,
                     sellerName: bookData.sellerName ?? null,
+                    amazonLink: bookData.url ?? null,
                     reviews: [],
                     bestSellersRank: bookData.best_sellers_rank ?? []
                 };
