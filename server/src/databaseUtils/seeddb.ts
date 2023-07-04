@@ -1,5 +1,10 @@
 // Run on the command line using npx ts-node seeddb.ts
 
+// Todo:
+// Remove box sets
+// Remove books without images potentially
+// Remove duplicates
+
 import fs from "fs";
 import { promisify } from "util";
 import mongoose, { ConnectOptions } from "mongoose";
