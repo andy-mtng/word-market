@@ -1,7 +1,7 @@
-import mongoose, { Schema, model, Types, Document, Model } from "mongoose";
-import IUser from "../types/IUser";
+import mongoose, { Schema, model } from "mongoose";
+import UserDocument from "../types/UserDocument";
 
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<UserDocument>({
     firstName: {
         type: String,
         required: true
@@ -40,5 +40,5 @@ const userSchema = new Schema<IUser>({
     }
 });
 
-const UserModel = model<IUser>("User", userSchema);
+const UserModel = model<UserDocument>("User", userSchema);
 export default UserModel;

@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { Document } from "mongoose";
 import UserModel from "../models/UserModel";
 import bcrypt from "bcrypt";
 import UserDocument from "../types/UserDocument";

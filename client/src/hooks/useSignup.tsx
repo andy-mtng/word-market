@@ -25,9 +25,9 @@ export const useSignup = () => {
                 }
             })
             .catch((error) => {
+                console.log(error);
                 setShowNotification(true);
                 setNotificationInfo({ message: error.message, type: "error" });
-                console.log(error);
             });
     };
 

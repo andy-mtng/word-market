@@ -1,7 +1,9 @@
+import HeroSection from "../components/HeroSection";
+
 function Home(): JSX.Element {
     return (
         <div>
-            <h1>Home</h1>
+            <HeroSection />
         </div>
     );
 }

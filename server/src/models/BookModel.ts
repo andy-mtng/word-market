@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import mongoose, { Schema, model } from "mongoose";
+import BookDocument from "../types/BookDocument";
 
 const bestSellerRankSchema = new Schema({
     category: {
@@ -10,7 +10,7 @@ const bestSellerRankSchema = new Schema({
     }
 });
 
-const bookSchema = new Schema({
+const bookSchema = new Schema<BookDocument>({
     ISBN10: {
         type: String
     },
@@ -47,6 +47,9 @@ const bookSchema = new Schema({
     productDimensions: {
         type: String
     },
+    amazonLink: {
+        type: String
+    },
     sellerName: {
         type: String
     },
@@ -55,5 +58,5 @@ const bookSchema = new Schema({
     }
 });
 
-const BookModel = mongoose.model("Book", bookSchema);
+const BookModel = model<BookDocument>("Book", bookSchema);
 export default BookModel;

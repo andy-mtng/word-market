@@ -4,15 +4,25 @@ const Schema = mongoose.Schema;
 const reviewSchema = new Schema({
     rating: {
         type: Number,
-        required: true,
+        required: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "User"
+    },
+    firstName: {
+        type: String
+    },
+    lastName: {
+        type: String
+    },
+    profileImage: {
+        data: String,
+        contentType: String
     },
     reviewContent: {
-        type: String,
-    },
+        type: String
+    }
 });
 
 const ReviewModel = mongoose.model("Review", reviewSchema);
