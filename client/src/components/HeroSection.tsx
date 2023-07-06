@@ -3,6 +3,7 @@ import { Rating } from "react-simple-star-rating";
 import { ReactComponent as BlobIcon } from "../assets/blob.svg";
 import AtomicHabitsCover from "../assets/atomic_habits_cover.jpg";
 import DotsImage from "../assets/dots.png";
+import BlobImage from "../assets/green_blob.png";
 
 function HeroSection(): JSX.Element {
     return (
@@ -47,7 +48,7 @@ function HeroSection(): JSX.Element {
                         alt="Atomic Habits Book Cover"
                         className="h-auto w-1/5 self-start"
                     />
-                    <div className="">
+                    <div className="z-50">
                         <div>
                             <h1 className="text-sm font-bold">Atomic Habits</h1>
                             <p className="text-xs text-gray-500">by James Clear</p>
@@ -64,12 +65,17 @@ function HeroSection(): JSX.Element {
                     </div>
                 </div>
 
-                <div className="relative z-50">
+                <div className="relative z-40">
                     <img src={DotsImage} alt="Dots" className="absolute left-0 top-14 opacity-50" />
 
-                    <img className="z-50 mr-40" src={JamesClearImage} alt="James Clear" />
+                    <img className="z-30 mr-40" src={JamesClearImage} alt="James Clear" />
                 </div>
-                <BlobIcon className="absolute right-12 top-0 z-0 h-auto w-1/2 opacity-50" />
+                <img
+                    className="absolute right-40 top-20 z-0 h-auto w-2/5 opacity-70"
+                    src={BlobImage}
+                    alt="Green Blob"
+                />
+                {/* <BlobIcon className="absolute right-12 top-0 z-0 h-auto w-1/2 bg-red-200 opacity-50" /> */}
             </div>
         </section>
     );
