@@ -1,26 +1,51 @@
 import { Book as IBook } from "../types/Book";
-import { Rating } from "react-simple-star-rating";
+import { Rating, Star } from "@smastrom/react-rating";
+import { useNavigate } from "react-router-dom";
 
 interface BookDisplayProps {
     title: string;
     rating: number;
     price: number;
     image: string;
+    author: string;
+    id: string;
 }
 
+const myStyles = {
+    itemShapes: Star,
+    activeFillColor: "#ffb700",
+    inactiveFillColor: "#e2e8f0"
+};
+
 function BookDisplay(props: BookDisplayProps): JSX.Element {
-    const { title, rating, price, image } = props;
+    const { title, rating, price, image, author, id } = props;
+    const navigate = useNavigate();
 
     return (
-        <div className="flex flex-col items-center">
-            <img className="w-50 h-auto rounded-md" src={image} alt="Book" />
-            <h1 className="center w-50 break-words text-sm font-medium">{title}</h1>
-            <div className="flex">
+        <div
+            className="flex flex-col gap-1 rounded-md bg-gray-50 px-8 py-4"
+            onClick={() => {
+                navigate(`/books/${id}`);
+            }}
+        >
+            {image ? (
+                <img
+                    className="w-50 h-60 self-center rounded-md object-cover"
+                    src={image}
+                    alt="Book"
+                />
+            ) : (
+                <div className="w-50 h-60 rounded-md bg-gray-300"></div>
+            )}
+            <h1 className="w-50 mr-auto mt-3 text-sm font-semibold">{title}</h1>
+            <h2 className="text-xs text-gray-500">{author ? `by ${author}` : ""}</h2>
+            <p className="mr-auto flex text-2xl font-medium">${price}</p>
+            <div className="mt-auto">
                 <Rating
-                    initialValue={rating}
-                    readonly={true}
-                    size={20}
-                    SVGstyle={{ display: "inline-block" }}
+                    style={{ maxWidth: 100, marginRight: 0 }}
+                    value={rating}
+                    readOnly={true}
+                    itemStyles={myStyles}
                 />
             </div>
         </div>

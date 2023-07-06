@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import "@smastrom/react-rating/style.css";
 import App from "./App";
 import { NotificationContextProvider } from "./contexts/NotificationContext";
 import { UserContextProvider } from "./contexts/UserContext";

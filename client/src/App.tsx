@@ -8,6 +8,7 @@ import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import Explore from "./pages/Explore";
 import Layout from "./pages/Layout";
+import BookPage from "./pages/BookPage";
 
 function App() {
     const { user } = useUserContext();
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/login" element={user ? <Home /> : <Login />} />
                     <Route path="/signup" element={user ? <Home /> : <Signup />} />
                     <Route path="/explore" element={<Explore />} />
+                    <Route path="/books/:id" element={<BookPage />} />
                     <Route path="/profile" element={user ? <Profile /> : <Home />} />
                 </Routes>
             </Layout>

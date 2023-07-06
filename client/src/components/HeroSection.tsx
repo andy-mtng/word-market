@@ -1,6 +1,5 @@
 import JamesClearImage from "../assets/james_clear.png";
 import { Rating } from "react-simple-star-rating";
-import { ReactComponent as BlobIcon } from "../assets/blob.svg";
 import AtomicHabitsCover from "../assets/atomic_habits_cover.jpg";
 import DotsImage from "../assets/dots.png";
 import BlobImage from "../assets/green_blob.png";
@@ -75,7 +74,6 @@ function HeroSection(): JSX.Element {
                     src={BlobImage}
                     alt="Green Blob"
                 />
-                {/* <BlobIcon className="absolute right-12 top-0 z-0 h-auto w-1/2 bg-red-200 opacity-50" /> */}
             </div>
         </section>
     );
