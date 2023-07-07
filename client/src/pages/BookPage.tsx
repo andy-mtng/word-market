@@ -6,6 +6,7 @@ import { Book } from "../types/Book";
 import { Rating } from "@smastrom/react-rating";
 import starStyles from "../styles/starStyles";
 import { AiOutlineAmazon } from "react-icons/ai";
+import useUserContext from "../hooks/useUserContext";
 
 function BookPage(): JSX.Element {
     const [book, setBook] = useState<Book>();
@@ -20,6 +21,40 @@ function BookPage(): JSX.Element {
         "bg-orange-100"
     ];
     const { id } = useParams();
+    const { user } = useUserContext();
+
+    const addToCard = () => {
+        if (user) {
+            let exists = false;
+            for (let cartItem of user.cart) {
+                if (cartItem.bookId === book?._id) {
+                    cartItem.quantity += 1;
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                user.cart.push({ bookId: book?._id!, quantity: 1 });
+            }
+            console.log(user);
+            localStorage.setItem("user", JSON.stringify(user));
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            // Save user cart serverside
+            if (user) {
+                axios
+                    .patch("/cart", user)
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        };
+    });
 
     useEffect(() => {
         axios
@@ -41,15 +76,17 @@ function BookPage(): JSX.Element {
         <div>
             <div className="mt-6 flex h-full gap-10">
                 <img src={book?.image} alt="Book Cover" />
+
                 <div className="flex w-full flex-col">
                     <h1 className="mb-3 text-3xl font-bold">{book?.title}</h1>
                     <h2 className="mb-2">{book?.brand ? `by ${book.brand}` : ""}</h2>
                     <div className="mb-4 flex flex-row">
-                        {book?.categories.map((category) => {
+                        {book?.categories.map((category, index) => {
                             const randomColour =
                                 categoryColors[Math.floor(Math.random() * categoryColors.length)];
                             return (
                                 <span
+                                    key={index}
                                     className={`mr-2 rounded-full px-2 py-0.5 text-xs ${randomColour}`}
                                 >
                                     {category}
@@ -66,9 +103,9 @@ function BookPage(): JSX.Element {
                             itemStyles={starStyles}
                         />
                     </div>
-                    {book?.bestSellersRank.map((bestSellerRank) => {
+                    {book?.bestSellersRank.map((bestSellerRank, index) => {
                         return (
-                            <div className="flex gap-2">
+                            <div className="flex gap-2" key={index}>
                                 <p>#{bestSellerRank.rank}</p>
                                 <p>{bestSellerRank.category}</p>
                             </div>
@@ -76,8 +113,13 @@ function BookPage(): JSX.Element {
                     })}
                     <div className="mt-auto flex">
                         <p className="mr-10 text-2xl font-semibold">${book?.price}</p>
+
+                        {/* Add to cart button */}
                         <div className="flex gap-4">
-                            <button className="flex items-center gap-1 rounded-md bg-green-500 px-3 py-1 text-white">
+                            <button
+                                onClick={addToCard}
+                                className="flex items-center gap-1 rounded-md bg-green-700 px-3 py-1 text-white"
+                            >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -94,6 +136,8 @@ function BookPage(): JSX.Element {
                                 </svg>
                                 <p className="text-xs font-semibold">ADD TO CART</p>
                             </button>
+
+                            {/* Amazon button */}
                             {book?.amazonLink ? (
                                 <button className="rounded-md bg-orange-400 px-3 py-1 text-xs font-semibold">
                                     <a
@@ -120,9 +164,9 @@ function BookPage(): JSX.Element {
                 {book?.reviews.length === 0 && <p>No reviews for this product.</p>}
 
                 {/* Display all reviews*/}
-                {book?.reviews.map((review) => {
+                {book?.reviews.map((review, index) => {
                     return (
-                        <div>
+                        <div key={index}>
                             <h1>
                                 {review.firstName} {review.lastName}
                             </h1>

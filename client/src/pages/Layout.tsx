@@ -14,6 +14,9 @@ function Layout({ children }: LayoutProps): JSX.Element {
             {showNotification && <Notification />}
             <Navbar />
             <main className="px-12">{children}</main>
+            <footer className="mt-16 h-20 bg-green-900 px-12 py-6 font-semibold text-white">
+                WordMarket
+            </footer>
         </>
     );
 }

@@ -6,7 +6,6 @@ const getBook = (req: Request, res: Response) => {
     const bookId = req.params.id;
     BookModel.findById(bookId)
         .then((book: BookDocument | null) => {
-            console.log("book", book);
             if (book === null) {
                 console.log("Book not found");
                 return res.status(404).json({ message: "Book not found" });
