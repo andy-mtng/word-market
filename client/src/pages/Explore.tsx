@@ -29,7 +29,6 @@ function Explore(): JSX.Element {
             <h1 className="text-xl font-medium">Explore Page</h1>
             <div className="grid grid-cols-4 gap-6">
                 {books?.map((book: IBook, index) => {
-                    console.log(book);
                     return (
                         <BookDisplay
                             title={book.title}

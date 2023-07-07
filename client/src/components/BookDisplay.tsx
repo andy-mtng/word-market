@@ -1,6 +1,7 @@
 import { Book as IBook } from "../types/Book";
 import { Rating, Star } from "@smastrom/react-rating";
 import { useNavigate } from "react-router-dom";
+import starStyles from "../styles/starStyles";
 
 interface BookDisplayProps {
     title: string;
@@ -10,12 +11,6 @@ interface BookDisplayProps {
     author: string;
     id: string;
 }
-
-const myStyles = {
-    itemShapes: Star,
-    activeFillColor: "#ffb700",
-    inactiveFillColor: "#e2e8f0"
-};
 
 function BookDisplay(props: BookDisplayProps): JSX.Element {
     const { title, rating, price, image, author, id } = props;
@@ -45,7 +40,7 @@ function BookDisplay(props: BookDisplayProps): JSX.Element {
                     style={{ maxWidth: 100, marginRight: 0 }}
                     value={rating}
                     readOnly={true}
-                    itemStyles={myStyles}
+                    itemStyles={starStyles}
                 />
             </div>
         </div>

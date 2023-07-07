@@ -13,7 +13,7 @@ function Navbar(): JSX.Element {
                     <h1 className="text-2xl font-bold">WordMarket</h1>
                 </div>
             </Link>
-            <ul className="flex items-center gap-4 text-lg font-medium">
+            <ul className="flex items-center gap-6 text-lg font-medium">
                 <li>
                     <Link to="/explore">Explore</Link>
                 </li>
