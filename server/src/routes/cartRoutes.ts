@@ -1,8 +1,10 @@
 import express from "express";
 const router = express.Router();
-import { saveCart } from "../controllers/cartController";
+import { getCart, saveCart } from "../controllers/cartController";
 import requireAuth from "../utils/requireAuth";
 
-router.patch("/", saveCart);
+router.patch("/", requireAuth, saveCart);
+
+router.get("/", requireAuth, getCart);
 
 export default router;

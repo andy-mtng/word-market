@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import Explore from "./pages/Explore";
 import Layout from "./pages/Layout";
 import BookPage from "./pages/BookPage";
+import CartPage from "./pages/CartPage";
 
 function App() {
     const { user } = useUserContext();
@@ -22,7 +23,8 @@ function App() {
                     <Route path="/signup" element={user ? <Home /> : <Signup />} />
                     <Route path="/explore" element={<Explore />} />
                     <Route path="/books/:id" element={<BookPage />} />
-                    <Route path="/profile" element={user ? <Profile /> : <Home />} />
+                    <Route path="/profile" element={user ? <Profile /> : <Login />} />
+                    <Route path="/cart" element={user ? <CartPage /> : <Login />} />
                 </Routes>
             </Layout>
         </BrowserRouter>

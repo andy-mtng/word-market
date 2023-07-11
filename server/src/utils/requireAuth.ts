@@ -3,10 +3,6 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import UserModel from "../models/UserModel";
 import UserDocument from "../types/UserDocument";
 
-interface RequestWithUser extends Request {
-    user?: UserDocument;
-}
-
 const requireAuth = (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.jwt;
 
@@ -20,7 +16,7 @@ const requireAuth = (req: Request, res: Response, next: NextFunction) => {
     UserModel.findOne({ _id: userId })
         .then((foundUser: UserDocument | null) => {
             if (foundUser !== null || foundUser !== undefined) {
-                (req as RequestWithUser).user = foundUser!;
+                res.locals.user = foundUser!;
                 next();
             } else {
                 throw new Error("User not found");

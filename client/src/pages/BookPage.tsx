@@ -7,6 +7,7 @@ import { Rating } from "@smastrom/react-rating";
 import starStyles from "../styles/starStyles";
 import { AiOutlineAmazon } from "react-icons/ai";
 import useUserContext from "../hooks/useUserContext";
+axios.defaults.withCredentials = true;
 
 function BookPage(): JSX.Element {
     const [book, setBook] = useState<Book>();
@@ -35,7 +36,8 @@ function BookPage(): JSX.Element {
             if (!exists) {
                 user.cart.push({ bookId: book?._id!, quantity: 1 });
             }
-            console.log(user);
+            console.log("NEW ITEM", user);
+            // Saves the cart to local storage
             localStorage.setItem("user", JSON.stringify(user));
         }
     };
@@ -60,7 +62,6 @@ function BookPage(): JSX.Element {
         axios
             .get(`/books/${id}`)
             .then((response) => {
-                console.log(response);
                 if (response.statusText === "OK") {
                     setBook(response.data.data);
                 }
