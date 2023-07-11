@@ -35,6 +35,35 @@ function CartPage(): JSX.Element {
         }
     }, []);
 
+    const addOneProduct = (selectedBookId: string) => {
+        const updatedCart = cart.map((cartItem) => {
+            if (cartItem.bookId._id === selectedBookId) {
+                cartItem.quantity += 1;
+                return cartItem;
+            }
+            return cartItem;
+        });
+        setCart(updatedCart);
+    };
+
+    const removeOneProduct = (selectedBookId: string) => {
+        const updatedCart = cart.map((cartItem) => {
+            if (cartItem.bookId._id === selectedBookId) {
+                cartItem.quantity -= 1;
+                return cartItem;
+            }
+            return cartItem;
+        });
+        setCart(updatedCart);
+    };
+
+    const removeProduct = (selectedBookId: string) => {
+        const updatedCart = cart.filter((cartItem) => {
+            return cartItem.bookId._id !== selectedBookId;
+        });
+        setCart(updatedCart);
+    };
+
     return (
         <div className="mt-6 flex gap-8">
             <div className="w-2/3">
@@ -49,45 +78,62 @@ function CartPage(): JSX.Element {
                 <hr className="border-1 mb-8 border-gray-400"></hr>
                 {cart.map((cartItem, index) => {
                     return (
-                        <div>
-                            <div key={index} className="mb-8 flex justify-between">
-                                <div className="flex gap-5">
-                                    <img
-                                        className="h-28 w-28 rounded-md object-cover"
-                                        src={cartItem.bookId.image}
-                                        alt="Book"
-                                    />
-                                    <div className="flex flex-col justify-center gap-1">
-                                        <h1 className="font-semibold">
-                                            {cartItem.bookId.title.length > 40
-                                                ? cartItem.bookId.title.substring(0, 40) + "..."
-                                                : cartItem.bookId.title}
-                                        </h1>
-                                        <h2 className="text-sm text-gray-400">
-                                            {cartItem.bookId.brand}
-                                        </h2>
-                                    </div>
+                        <div key={index} className="mb-8 flex justify-between">
+                            <div className="flex gap-5">
+                                <img
+                                    className="h-28 w-28 rounded-md object-cover"
+                                    src={cartItem.bookId.image}
+                                    alt="Book"
+                                />
+                                <div className="flex flex-col justify-center gap-1">
+                                    <h1 className="font-semibold">
+                                        {cartItem.bookId.title.length > 40
+                                            ? cartItem.bookId.title.substring(0, 40) + "..."
+                                            : cartItem.bookId.title}
+                                    </h1>
+                                    <h2 className="text-sm text-gray-400">
+                                        {cartItem.bookId.brand}
+                                    </h2>
                                 </div>
-                                <div className="mt-3 flex items-center gap-28">
-                                    <div className="flex flex-col items-center gap-4">
-                                        <div className="flex items-center gap-2">
-                                            <button className="rounded-sm border border-gray-300 px-2 py-1">
-                                                <AiOutlinePlus size={16} />
-                                            </button>
-                                            <p>{cartItem.quantity}</p>
-                                            <button className="rounded-sm border border-gray-300 px-2 py-1">
-                                                <AiOutlineMinus size={16} />
-                                            </button>
-                                        </div>
-                                        <button className="flex items-center gap-1 text-sm">
-                                            <BsFillTrashFill />
-                                            Remove
+                            </div>
+                            <div className="mt-3 flex items-center gap-28">
+                                <div className="flex flex-col items-center gap-4">
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            onClick={() => {
+                                                addOneProduct(cartItem.bookId._id);
+                                            }}
+                                            className="rounded-sm border border-gray-300 px-2 py-1"
+                                        >
+                                            <AiOutlinePlus size={16} />
+                                        </button>
+                                        <p>{cartItem.quantity}</p>
+                                        <button
+                                            onClick={() => {
+                                                if (cartItem.quantity <= 1) {
+                                                    removeProduct(cartItem.bookId._id);
+                                                } else {
+                                                    removeOneProduct(cartItem.bookId._id);
+                                                }
+                                            }}
+                                            className="rounded-sm border border-gray-300 px-2 py-1"
+                                        >
+                                            <AiOutlineMinus size={16} />
                                         </button>
                                     </div>
-                                    <p className="w-10 text-right font-semibold">
-                                        ${cartItem.bookId.price}
-                                    </p>
+                                    <button
+                                        onClick={() => {
+                                            removeProduct(cartItem.bookId._id);
+                                        }}
+                                        className="flex items-center gap-1 text-sm"
+                                    >
+                                        <BsFillTrashFill />
+                                        Remove
+                                    </button>
                                 </div>
+                                <p className="w-10 text-right font-semibold">
+                                    ${cartItem.bookId.price}
+                                </p>
                             </div>
                         </div>
                     );
