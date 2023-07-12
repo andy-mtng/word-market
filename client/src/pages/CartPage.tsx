@@ -12,9 +12,11 @@ function CartPage(): JSX.Element {
     const [cart, setCart] = useState<PopulatedBook[]>([]);
     const { user } = useUserContext();
     const { setShowNotification, setNotificationInfo } = useNotificationContext();
-    const total = cart.reduce((accumualtor, currentValue) => {
+    const subtotal = cart.reduce((accumualtor, currentValue) => {
         return accumualtor + currentValue.quantity * currentValue.bookId.price;
     }, 0);
+    const tax: number = Math.round((subtotal * 0.05 + Number.EPSILON) * 100) / 100;
+    const total: number = subtotal + tax;
 
     useEffect(() => {
         if (user) {
@@ -48,11 +50,11 @@ function CartPage(): JSX.Element {
     useEffect(() => {
         return () => {
             if (user) {
-                // Saves the cart to local storage
-                console.log("before", user);
                 const convertedCart = convertCart();
+                // Ensures an empty cart is not saved to the user unintentionally
                 if (convertedCart.length > 0) {
                     user.cart = convertedCart;
+                    // Saves the cart to local storage
                     localStorage.setItem("user", JSON.stringify(user));
                     console.log("after", user);
                     // Save user cart serverside
@@ -165,8 +167,8 @@ function CartPage(): JSX.Element {
                                         Remove
                                     </button>
                                 </div>
-                                <p className="w-10 text-right font-semibold">
-                                    ${cartItem.bookId.price}
+                                <p className="w-12 text-right font-semibold">
+                                    ${cartItem.bookId.price.toFixed(2)}
                                 </p>
                             </div>
                         </div>
@@ -178,16 +180,16 @@ function CartPage(): JSX.Element {
             <div className="flex h-48 w-1/3 flex-col justify-center gap-3 rounded-md border border-gray-200 bg-white p-5 shadow-sm">
                 <div className="flex justify-between">
                     <p className="text-gray-400">Subtotal</p>
-                    <p className="font-medium">${total}</p>
+                    <p className="font-medium">${subtotal.toFixed(2)}</p>
                 </div>
                 <div className="flex justify-between">
-                    <p className="text-gray-400">Discount</p>
-                    <p className="font-medium">$0</p>
+                    <p className="text-gray-400">Tax</p>
+                    <p className="font-medium">${tax.toFixed(2)}</p>
                 </div>
                 <hr className="border-1 border-gray-300"></hr>
                 <div className="flex justify-between text-lg">
                     <p className="text-gray-800">Grand Total</p>
-                    <p className="font-medium">${total}</p>
+                    <p className="font-medium">${total.toFixed(2)}</p>
                 </div>
                 <button className="text-md w-full rounded-md bg-gray-900 py-2 text-white">
                     Checkout Now
