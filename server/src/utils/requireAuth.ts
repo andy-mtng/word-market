@@ -8,6 +8,7 @@ const requireAuth = (req: Request, res: Response, next: NextFunction) => {
 
     // User is not authorized to perform a certain action
     if (!token) {
+        console.log("Not authorized.");
         return res.status(401).json({ error: "You are not authorized" });
     }
 

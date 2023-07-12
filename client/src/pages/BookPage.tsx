@@ -24,7 +24,7 @@ function BookPage(): JSX.Element {
     const { id } = useParams();
     const { user } = useUserContext();
 
-    const addToCard = () => {
+    const addToCart = () => {
         if (user) {
             let exists = false;
             for (let cartItem of user.cart) {
@@ -36,7 +36,8 @@ function BookPage(): JSX.Element {
             if (!exists) {
                 user.cart.push({ bookId: book?._id!, quantity: 1 });
             }
-            console.log("NEW ITEM", user);
+            setShowNotification(true);
+            setNotificationInfo({ message: "Item added to cart", type: "success" });
             // Saves the cart to local storage
             localStorage.setItem("user", JSON.stringify(user));
         }
@@ -52,7 +53,9 @@ function BookPage(): JSX.Element {
                         console.log(response);
                     })
                     .catch((error) => {
-                        console.log(error);
+                        console.log("BOOKPAGE", error);
+                        setShowNotification(true);
+                        setNotificationInfo({ message: error.message, type: "error" });
                     });
             }
         };
@@ -118,7 +121,7 @@ function BookPage(): JSX.Element {
                         {/* Add to cart button */}
                         <div className="flex gap-4">
                             <button
-                                onClick={addToCard}
+                                onClick={addToCart}
                                 className="flex items-center gap-1 rounded-md bg-green-700 px-3 py-1 text-white"
                             >
                                 <svg

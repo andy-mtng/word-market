@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PopulatedBook } from "../types/PopulatedBook";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
+import { Cart } from "../types/Cart";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -14,9 +15,6 @@ function CartPage(): JSX.Element {
     const total = cart.reduce((accumualtor, currentValue) => {
         return accumualtor + currentValue.quantity * currentValue.bookId.price;
     }, 0);
-
-    // Add quantity updates using the cart
-    // Then save to client side localstorage and serverside
 
     useEffect(() => {
         if (user) {
@@ -34,6 +32,42 @@ function CartPage(): JSX.Element {
                 });
         }
     }, []);
+
+    const convertCart = () => {
+        const convertedCart: Cart[] = cart.map((cartItem) => {
+            return {
+                bookId: cartItem.bookId._id,
+                quantity: cartItem.quantity
+            };
+        });
+        console.log("convertedCart", convertedCart);
+        // user!.cart = convertedCart;
+        return convertedCart;
+    };
+
+    useEffect(() => {
+        return () => {
+            if (user) {
+                // Saves the cart to local storage
+                console.log("before", user);
+                const convertedCart = convertCart();
+                if (convertedCart.length > 0) {
+                    user.cart = convertedCart;
+                    localStorage.setItem("user", JSON.stringify(user));
+                    console.log("after", user);
+                    // Save user cart serverside
+                    axios
+                        .patch("/cart", user)
+                        .then((response) => {
+                            console.log(response);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
+            }
+        };
+    });
 
     const addOneProduct = (selectedBookId: string) => {
         const updatedCart = cart.map((cartItem) => {
@@ -65,7 +99,7 @@ function CartPage(): JSX.Element {
     };
 
     return (
-        <div className="mt-6 flex gap-8">
+        <div className="mt-6 flex gap-14">
             <div className="w-2/3">
                 <h1 className="mb-3 text-2xl font-semibold">Shopping Cart</h1>
                 <div className="mb-2 flex justify-between text-sm text-gray-400">

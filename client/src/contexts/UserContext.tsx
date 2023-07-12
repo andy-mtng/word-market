@@ -1,22 +1,7 @@
 import { createContext, useState } from "react";
-
-interface ProfilePicture {
-    data: string;
-    contentType: string;
-}
-
-interface Cart {
-    bookId: string;
-    quantity: number;
-}
-
-interface User {
-    firstName: string;
-    lastName: string;
-    email: string;
-    cart: Cart[];
-    profilePicture: ProfilePicture;
-}
+import { Cart } from "../types/Cart";
+import { ProfilePicture } from "../types/ProfilePicture";
+import { User } from "../types/User";
 
 interface User2 {
     user: User | null;
