@@ -42,8 +42,6 @@ function CartPage(): JSX.Element {
                 quantity: cartItem.quantity
             };
         });
-        console.log("convertedCart", convertedCart);
-        // user!.cart = convertedCart;
         return convertedCart;
     };
 
@@ -56,15 +54,14 @@ function CartPage(): JSX.Element {
                     user.cart = convertedCart;
                     // Saves the cart to local storage
                     localStorage.setItem("user", JSON.stringify(user));
-                    console.log("after", user);
                     // Save user cart serverside
                     axios
                         .patch("/cart", user)
-                        .then((response) => {
-                            console.log(response);
-                        })
+                        .then(() => {})
                         .catch((error) => {
                             console.log(error);
+                            setShowNotification(true);
+                            setNotificationInfo({ message: error.message, type: "error" });
                         });
                 }
             }
@@ -191,9 +188,17 @@ function CartPage(): JSX.Element {
                     <p className="text-gray-800">Grand Total</p>
                     <p className="font-medium">${total.toFixed(2)}</p>
                 </div>
-                <button className="text-md w-full rounded-md bg-gray-900 py-2 text-white">
+                {/* <button className="text-md w-full rounded-md bg-gray-900 py-2 text-white">
                     Checkout Now
-                </button>
+                </button> */}
+                <form action="/checkout" method="POST">
+                    <button
+                        className="text-md w-full rounded-md bg-gray-900 py-2 text-white"
+                        type="submit"
+                    >
+                        Checkout
+                    </button>
+                </form>
             </div>
         </div>
     );

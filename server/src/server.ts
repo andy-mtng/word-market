@@ -5,6 +5,7 @@ import mongoose, { ConnectOptions } from "mongoose";
 import authRouter from "./routes/authRoutes";
 import bookRouter from "./routes/bookRoutes";
 import cartRouter from "./routes/cartRoutes";
+import billingRouter from "./routes/billingRoutes";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 const app = express();
@@ -21,6 +22,7 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use("/auth", authRouter);
 app.use("/books", bookRouter);
 app.use("/cart", cartRouter);
+app.use("/checkout", billingRouter);
 
 // Connect to database
 mongoose
