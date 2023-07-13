@@ -1,3 +1,4 @@
 node_modules
 .env
 src/databaseUtils/dataBaseConnectionString.ts
+src/databaseUtils/stripeApiKey.ts

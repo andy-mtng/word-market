@@ -1,7 +1,8 @@
 // https://stripe.com/docs/api/products/create?lang=node
 
 const Stripe = require("stripe");
-const stripe = Stripe(process.env.STRIPE_API_KEY);
+import stripeApiKey from "./stripeApiKey";
+const stripe = Stripe(stripeApiKey);
 import mongoose, { ConnectOptions } from "mongoose";
 import connectionString from "./dataBaseConnectionString";
 import BookModel from "../models/BookModel";
@@ -12,16 +13,18 @@ const createProducts = async () => {
         const books: BookDocument[] = await BookModel.find({});
         for (const book of books) {
             await stripe.products.create({
-                id: book._id,
+                id: book._id.toString(),
                 name: book.title
             });
 
-            // await stripe.prices.create({
-            //     unit_amount: book.price * 100,
-            //     currency: "usd",
-            //     product: book._id
-            // });
+            await stripe.prices.create({
+                unit_amount: Math.round(book.price * 100),
+                currency: "usd",
+                product: book._id.toString()
+            });
+            console.log(`${book.title} created`);
         }
+        console.log("Done creating products");
     } catch (error) {
         console.log("Error creating Stripe products", error);
     }
@@ -35,6 +38,7 @@ mongoose
     } as ConnectOptions)
     .then(() => {
         console.log("Connected to MongoDB");
+        console.log("Starting to create products");
         createProducts();
     })
     .catch((error) => {
