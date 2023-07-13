@@ -10,30 +10,9 @@ import { promisify } from "util";
 import mongoose, { ConnectOptions } from "mongoose";
 import BookModel from "../models/BookModel";
 import connectionString from "./dataBaseConnectionString";
+import Book from "../types/Book";
 
 const readFileAsync = promisify(fs.readFile);
-
-type BestSellerRank = {
-    category: string;
-    rank: number;
-};
-
-// Add reviews later to the model
-type Book = {
-    ISBN10: string;
-    brand: string;
-    title: string;
-    rating: number;
-    price: number;
-    image: string;
-    categories: string[];
-    itemWeight: string;
-    reviews: any[];
-    productDimensions: string;
-    amazonLink: string;
-    sellerName: string;
-    bestSellersRank: BestSellerRank[];
-};
 
 const getBooks = (): Promise<any[]> => {
     return readFileAsync("./amazon_books_data.json", "utf-8")
@@ -145,4 +124,4 @@ mongoose
         console.log("Error connecting to MongoDB", error);
     });
 
-export default processBooks;
+export { processBooks, getBooks };
