@@ -33,9 +33,9 @@ function BookDisplay(props: BookDisplayProps): JSX.Element {
                 <div className="w-50 h-60 rounded-md bg-gray-300"></div>
             )}
             <h1 className="w-50 mr-auto mt-3 text-sm font-semibold">{title}</h1>
-            <h2 className="text-xs text-gray-500">{author ? `by ${author}` : ""}</h2>
-            <p className="mr-auto flex text-2xl font-medium">${price}</p>
-            <div className="mt-auto">
+            <h2 className="mb-5 text-xs text-gray-500">{author ? `by ${author}` : ""}</h2>
+            <div className="mt-auto flex justify-between">
+                <p className="text-2xl font-medium">${price.toFixed(2)}</p>
                 <Rating
                     style={{ maxWidth: 100, marginRight: 0 }}
                     value={rating}

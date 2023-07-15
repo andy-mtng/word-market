@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { Cart } from "../types/Cart";
 import { ProfilePicture } from "../types/ProfilePicture";
 import { User } from "../types/User";
@@ -32,6 +32,10 @@ const UserContextProvider = ({ children }: userContextProviderProps) => {
     );
 
     console.log(user);
+
+    useEffect(() => {
+        localStorage.setItem("user", JSON.stringify(user));
+    }, [user]);
 
     return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };

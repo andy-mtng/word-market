@@ -1,14 +1,6 @@
 import { Types } from "mongoose";
-
-interface ProfileImage {
-    data: string;
-    contentType: string;
-}
-
-interface Cart {
-    bookId: Types.ObjectId;
-    quantity: number;
-}
+import Cart from "./Cart";
+import ProfileImage from "./ProfileImage";
 
 interface User {
     _id: Types.ObjectId;

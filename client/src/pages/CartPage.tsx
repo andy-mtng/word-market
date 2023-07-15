@@ -10,15 +10,17 @@ axios.defaults.withCredentials = true;
 
 function CartPage(): JSX.Element {
     const [cart, setCart] = useState<PopulatedBook[]>([]);
-    const { user } = useUserContext();
+    const [cartRetrieved, setCartRetrieved] = useState<boolean>(false);
+    const { user, setUser } = useUserContext();
     const { setShowNotification, setNotificationInfo } = useNotificationContext();
-    const subtotal = cart.reduce((accumualtor, currentValue) => {
-        return accumualtor + currentValue.quantity * currentValue.bookId.price;
+    const subtotal = cart.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.quantity * currentValue.bookId.price;
     }, 0);
     const tax: number = Math.round((subtotal * 0.05 + Number.EPSILON) * 100) / 100;
     const total: number = subtotal + tax;
 
     useEffect(() => {
+        console.log("Getting Cart");
         if (user) {
             axios({
                 method: "GET",
@@ -26,6 +28,7 @@ function CartPage(): JSX.Element {
             })
                 .then((response) => {
                     setCart(response.data.populatedCart);
+                    setCartRetrieved(true);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -46,27 +49,22 @@ function CartPage(): JSX.Element {
     };
 
     useEffect(() => {
-        return () => {
-            if (user) {
-                const convertedCart = convertCart();
-                // Ensures an empty cart is not saved to the user unintentionally
-                if (convertedCart.length > 0) {
-                    user.cart = convertedCart;
-                    // Saves the cart to local storage
-                    localStorage.setItem("user", JSON.stringify(user));
-                    // Save user cart serverside
-                    axios
-                        .patch("/cart", user)
-                        .then(() => {})
-                        .catch((error) => {
-                            console.log(error);
-                            setShowNotification(true);
-                            setNotificationInfo({ message: error.message, type: "error" });
-                        });
-                }
-            }
-        };
-    });
+        // Checking if the cart is retrieved ensures an empty cart is not saved to the user unintentionally
+        if (user && cartRetrieved) {
+            const convertedCart = convertCart();
+            const updatedUser = { ...user, cart: convertedCart };
+            setUser(updatedUser); // User context saves changes to localStorage when user changes
+            // Save user cart serverside
+            axios
+                .patch("/cart", updatedUser)
+                .then(() => {})
+                .catch((error) => {
+                    console.log(error);
+                    setShowNotification(true);
+                    setNotificationInfo({ message: error.message, type: "error" });
+                });
+        }
+    }, [cart]);
 
     const addOneProduct = (selectedBookId: string) => {
         const updatedCart = cart.map((cartItem) => {
@@ -188,9 +186,6 @@ function CartPage(): JSX.Element {
                     <p className="text-gray-800">Grand Total</p>
                     <p className="font-medium">${total.toFixed(2)}</p>
                 </div>
-                {/* <button className="text-md w-full rounded-md bg-gray-900 py-2 text-white">
-                    Checkout Now
-                </button> */}
                 <form action="/checkout" method="POST">
                     <button
                         className="text-md w-full rounded-md bg-gray-900 py-2 text-white"

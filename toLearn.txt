@@ -13,3 +13,5 @@
 
 
 - Send pdf to email after order is completed
+- Automatically log a user out after their JWT expires
+- JWT cookie is deleted when the browser is closed
