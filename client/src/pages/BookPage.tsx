@@ -7,6 +7,7 @@ import { Rating } from "@smastrom/react-rating";
 import starStyles from "../styles/starStyles";
 import { AiOutlineAmazon } from "react-icons/ai";
 import useUserContext from "../hooks/useUserContext";
+import { Cart } from "../types/Cart";
 axios.defaults.withCredentials = true;
 
 function BookPage(): JSX.Element {
@@ -22,7 +23,7 @@ function BookPage(): JSX.Element {
         "bg-orange-100"
     ];
     const { id } = useParams();
-    const { user } = useUserContext();
+    const { user, setUser } = useUserContext();
 
     const addToCart = () => {
         if (user) {
@@ -34,12 +35,12 @@ function BookPage(): JSX.Element {
                 }
             }
             if (!exists) {
-                user.cart.push({ bookId: book?._id!, quantity: 1 });
+                const newCart: Cart[] = [...user.cart];
+                newCart.push({ bookId: book?._id!, quantity: 1 });
+                setUser({ ...user, cart: newCart });
             }
             setShowNotification(true);
             setNotificationInfo({ message: "Item added to cart", type: "success" });
-            // Saves the cart to local storage
-            localStorage.setItem("user", JSON.stringify(user));
         }
     };
 
