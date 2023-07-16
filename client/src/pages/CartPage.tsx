@@ -5,6 +5,7 @@ import { PopulatedBook } from "../types/PopulatedBook";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
 import { Cart } from "../types/Cart";
+import { MdOutlineLock } from "react-icons/md";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -172,26 +173,18 @@ function CartPage(): JSX.Element {
             </div>
 
             {/* Checkout menu */}
-            <div className="flex h-48 w-1/3 flex-col justify-center gap-3 rounded-md border border-gray-200 bg-white p-5 shadow-sm">
-                <div className="flex justify-between">
-                    <p className="text-gray-400">Subtotal</p>
-                    <p className="font-medium">${subtotal.toFixed(2)}</p>
-                </div>
-                <div className="flex justify-between">
-                    <p className="text-gray-400">Tax</p>
-                    <p className="font-medium">${tax.toFixed(2)}</p>
-                </div>
-                <hr className="border-1 border-gray-300"></hr>
+            <div className="flex w-1/3 flex-col gap-3 self-start rounded-md border border-gray-200 bg-white p-5 shadow-sm">
                 <div className="flex justify-between text-lg">
-                    <p className="text-gray-800">Grand Total</p>
+                    <p className="text-gray-800">Total</p>
                     <p className="font-medium">${total.toFixed(2)}</p>
                 </div>
                 <form action="/checkout" method="POST">
                     <button
-                        className="text-md w-full rounded-md bg-gray-900 py-2 text-white"
+                        className="text-md flex w-full items-center justify-center gap-2 rounded-md bg-gray-900 py-2 text-white"
                         type="submit"
                     >
-                        Checkout
+                        <MdOutlineLock />
+                        <p>Checkout</p>
                     </button>
                 </form>
             </div>

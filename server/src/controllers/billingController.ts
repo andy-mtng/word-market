@@ -27,8 +27,8 @@ const createCheckoutSession = async (req: Request, res: Response) => {
     const session = await stripe.checkout.sessions.create({
         line_items: line_items,
         mode: "payment",
-        success_url: `${domain}?success=true`,
-        cancel_url: `${domain}?canceled=true`
+        success_url: `${domain}/order-confirmation?success=true`,
+        cancel_url: `${domain}/cart?canceled=true`
     });
 
     res.redirect(303, session.url);

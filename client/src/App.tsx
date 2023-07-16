@@ -10,6 +10,8 @@ import Explore from "./pages/Explore";
 import Layout from "./pages/Layout";
 import BookPage from "./pages/BookPage";
 import CartPage from "./pages/CartPage";
+import OrderConfirmation from "./pages/OrderConfirmation";
+import Error from "./pages/Error";
 
 function App() {
     const { user } = useUserContext();
@@ -25,6 +27,11 @@ function App() {
                     <Route path="/books/:id" element={<BookPage />} />
                     <Route path="/profile" element={user ? <Profile /> : <Login />} />
                     <Route path="/cart" element={user ? <CartPage /> : <Login />} />
+                    <Route
+                        path="/order-confirmation"
+                        element={user ? <OrderConfirmation /> : <Login />}
+                    />
+                    <Route path="*" element={Error} />
                 </Routes>
             </Layout>
         </BrowserRouter>
