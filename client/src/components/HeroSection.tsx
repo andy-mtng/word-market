@@ -30,7 +30,7 @@ function HeroSection(): JSX.Element {
                     </span>
                 </div>
                 <div className="flex gap-4">
-                    <button className="rounded-sm border-2 border-green-900 bg-green-900 px-6 py-2 text-xs font-bold tracking-wider text-white">
+                    <button className="rounded-sm bg-gray-800 px-6 py-2 text-xs font-bold tracking-wider text-white">
                         Buy Now
                     </button>
                     <button className="box-border rounded-sm border-2 border-gray-200 px-6 py-2 text-xs font-bold tracking-wider text-green-900">
