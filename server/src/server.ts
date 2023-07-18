@@ -1,11 +1,12 @@
 // Imports
 require("dotenv").config();
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import mongoose, { ConnectOptions } from "mongoose";
 import authRouter from "./routes/authRoutes";
 import bookRouter from "./routes/bookRoutes";
 import cartRouter from "./routes/cartRoutes";
 import billingRouter from "./routes/billingRoutes";
+import conditionalWrapper from "./utils/conditionalWrapper";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 const app = express();
@@ -15,7 +16,7 @@ const port = 5000;
 
 // Middleware
 app.use(cookieParser());
-app.use(express.json());
+app.use(conditionalWrapper(express.json()));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 // Routes

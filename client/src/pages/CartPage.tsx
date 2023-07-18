@@ -124,7 +124,9 @@ function CartPage(): JSX.Element {
                                             : cartItem.bookId.title}
                                     </h1>
                                     <h2 className="text-sm text-gray-400">
-                                        {cartItem.bookId.brand}
+                                        {cartItem.bookId.brand.length > 40
+                                            ? cartItem.bookId.brand.substring(0, 40) + "..."
+                                            : cartItem.bookId.brand}
                                     </h2>
                                 </div>
                             </div>

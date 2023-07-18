@@ -3,12 +3,13 @@ import { Request, Response } from "express";
 import Cart from "../types/Cart";
 import getAllStripePrices from "../databaseUtils/getAllStripePrices";
 
+const domain = "http://localhost:3000";
+
 interface line_item {
     price: string;
     quantity: number;
 }
 
-const domain = "http://localhost:3000";
 const createCheckoutSession = async (req: Request, res: Response) => {
     const user = res.locals.user;
     const cart: Cart[] = user.cart;
@@ -34,4 +35,35 @@ const createCheckoutSession = async (req: Request, res: Response) => {
     res.redirect(303, session.url);
 };
 
-export { createCheckoutSession };
+const fulfillOrder = (lineItems: any) => {
+    console.log("Fulfilling order", lineItems);
+};
+
+const handleCheckoutCompletion = async (req: Request, res: Response) => {
+    const payload = req.body;
+    const sig = req.headers["stripe-signature"];
+
+    let event;
+
+    try {
+        event = stripe.webhooks.constructEvent(payload, sig, process.env.STRIPE_WEBHOOK_ENDPOINT);
+    } catch (error: any) {
+        console.log("Webhook error:", error);
+        return res.status(400).json({ error: error.message });
+    }
+
+    // Handle the checkout.session.completed event
+    if (event.type === "checkout.session.completed") {
+        // Retrieve the session. If you require line items in the response, you may include them by expanding line_items.
+        const sessionWithLineItems = await stripe.checkout.sessions.retrieve(event.data.object.id, {
+            expand: ["line_items"]
+        });
+        const lineItems = sessionWithLineItems.line_items;
+
+        // Fulfill the purchase...
+        fulfillOrder(lineItems);
+    }
+    res.status(200).end();
+};
+
+export { createCheckoutSession, handleCheckoutCompletion };
