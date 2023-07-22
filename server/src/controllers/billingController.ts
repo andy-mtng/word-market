@@ -2,6 +2,9 @@ const stripe = require("stripe")(process.env.STRIPE_API_KEY);
 import { Request, Response } from "express";
 import Cart from "../types/Cart";
 import getAllStripePrices from "../databaseUtils/getAllStripePrices";
+import UserModel from "../models/UserModel";
+import OrderModel from "../models/OrderModel";
+import UserDocument from "../types/UserDocument";
 
 const domain = "http://localhost:3000";
 
@@ -29,14 +32,44 @@ const createCheckoutSession = async (req: Request, res: Response) => {
         line_items: line_items,
         mode: "payment",
         success_url: `${domain}/order-confirmation?success=true`,
-        cancel_url: `${domain}/cart?canceled=true`
+        cancel_url: `${domain}/cart?canceled=true`,
+        metadata: {
+            userId: user.id
+        }
     });
 
     res.redirect(303, session.url);
 };
 
-const fulfillOrder = (lineItems: any) => {
-    console.log("Fulfilling order", lineItems);
+const fulfillOrder = (metadata: any) => {
+    return new Promise<string>((resolve, reject) => {
+        const userId = metadata.userId;
+
+        UserModel.findById(userId)
+            .then((foundUser: UserDocument | null) => {
+                if (foundUser === null) {
+                    throw new Error("User not found");
+                }
+
+                const newOrder = new OrderModel({
+                    user: userId,
+                    cart: foundUser.cart
+                });
+
+                return newOrder.save();
+            })
+            .then(() => {
+                return UserModel.findByIdAndUpdate(userId, { cart: [] });
+            })
+            .then(() => {
+                console.log("Order fulfilled successfully");
+                resolve(""); // Resolve the Promise when everything is successful
+            })
+            .catch((error: Error) => {
+                console.log("Error fulfilling order", error);
+                reject(error); // Reject the Promise if any error occurs
+            });
+    });
 };
 
 const handleCheckoutCompletion = async (req: Request, res: Response) => {
@@ -55,13 +88,16 @@ const handleCheckoutCompletion = async (req: Request, res: Response) => {
     // Handle the checkout.session.completed event
     if (event.type === "checkout.session.completed") {
         // Retrieve the session. If you require line items in the response, you may include them by expanding line_items.
-        const sessionWithLineItems = await stripe.checkout.sessions.retrieve(event.data.object.id, {
-            expand: ["line_items"]
-        });
-        const lineItems = sessionWithLineItems.line_items;
+        const stripeSession = await stripe.checkout.sessions.retrieve(event.data.object.id);
+        const metadata = stripeSession.metadata;
 
-        // Fulfill the purchase...
-        fulfillOrder(lineItems);
+        // Fulfill the purchase
+        try {
+            await fulfillOrder(metadata);
+        } catch (error: any) {
+            console.log("Error fullfilling order", error);
+            return res.status(400).json({ error: error.message });
+        }
     }
     res.status(200).end();
 };
