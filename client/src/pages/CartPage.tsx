@@ -17,8 +17,7 @@ function CartPage(): JSX.Element {
     const subtotal = cart.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.quantity * currentValue.bookId.price;
     }, 0);
-    const tax: number = Math.round((subtotal * 0.05 + Number.EPSILON) * 100) / 100;
-    const total: number = subtotal + tax;
+    const total: number = subtotal;
 
     useEffect(() => {
         console.log("Getting Cart");

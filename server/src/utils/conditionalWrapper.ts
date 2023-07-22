@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 
 function conditionalWrapper(fn: any) {
     return function (req: Request, res: Response, next: NextFunction) {
-        console.log("req.path", req.path);
         if (req.path === "/checkout/checkout-completion") {
             next();
         } else {

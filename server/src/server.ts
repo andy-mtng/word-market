@@ -6,6 +6,7 @@ import authRouter from "./routes/authRoutes";
 import bookRouter from "./routes/bookRoutes";
 import cartRouter from "./routes/cartRoutes";
 import billingRouter from "./routes/billingRoutes";
+import orderRouter from "./routes/orderRoutes";
 import conditionalWrapper from "./utils/conditionalWrapper";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -24,6 +25,7 @@ app.use("/auth", authRouter);
 app.use("/books", bookRouter);
 app.use("/cart", cartRouter);
 app.use("/checkout", billingRouter);
+app.use("/orders", orderRouter);
 
 // Connect to database
 mongoose
