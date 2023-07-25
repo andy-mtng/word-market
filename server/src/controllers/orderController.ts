@@ -8,7 +8,6 @@ const getOrders = (req: Request, res: Response) => {
         .populate("cart.bookId")
         .exec()
         .then((populatedOrders) => {
-            console.log("populatedOrders", populatedOrders[0].cart);
             res.status(200).json({ orders: populatedOrders });
         })
         .catch((error: Error) => {
