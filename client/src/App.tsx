@@ -8,8 +8,8 @@ import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import Explore from "./pages/Explore";
 import Layout from "./pages/Layout";
-import BookPage from "./pages/BookPage";
-import CartPage from "./pages/CartPage";
+import BookPage from "./pages/BookDetails";
+import CartPage from "./pages/Cart";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import Error from "./pages/Error";
 

@@ -107,6 +107,7 @@ function CartPage(): JSX.Element {
                     </div>
                 </div>
                 <hr className="border-1 mb-8 border-gray-400"></hr>
+                {cart.length <= 0 && <p>No items in your cart.</p>}
                 {cart.map((cartItem, index) => {
                     return (
                         <div key={index} className="mb-8 flex justify-between">
