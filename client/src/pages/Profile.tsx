@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Order } from "../types/Order";
 import useNotificationContext from "../hooks/useNotificationContext";
 import useProfilePictureContext from "../hooks/useProfileImageContext";
+import LoadingIcon from "../components/LoadingIcon";
 import moment from "moment";
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -13,6 +14,7 @@ function Profile(): JSX.Element {
     const { logout } = useLogout();
     const { user } = useUserContext();
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [ordersLoading, setOrdersLoading] = useState<boolean>(false);
     const [orders, setOrders] = useState<Order[]>([]);
     const { setNotificationInfo, setShowNotification } = useNotificationContext();
     const { profilePicture, updateProfilePicture } = useProfilePictureContext();
@@ -51,10 +53,12 @@ function Profile(): JSX.Element {
     }, [imageFile]);
 
     useEffect(() => {
+        setOrdersLoading(true);
         axios
             .get("/orders")
             .then((response) => {
                 console.log(response.data.orders[0].cart);
+                setOrdersLoading(false);
                 setOrders(response.data.orders);
             })
             .catch((error: Error) => {
@@ -85,25 +89,31 @@ function Profile(): JSX.Element {
             </h1>
 
             {/* Orders */}
-            <div className=" mb-16 w-[700px]">
-                <div className="relative">
-                    <h1 className="text-lg font-bold">Orders</h1>
-                    <hr className="border-5 absolute top-12 w-full border-gray-300"></hr>
+            <div className=" mb-16 w-[680px]">
+                <h1 className="text-lg font-bold">Orders</h1>
+                <div className="flex gap-[490px] text-sm text-gray-400">
+                    <p>ID</p>
+                    <div className="flex gap-20">
+                        <p>DATE</p>
+                        <p>QUANTITY</p>
+                    </div>
                 </div>
+                <hr className="border-5 w-full border-gray-300"></hr>
+                {ordersLoading && <LoadingIcon />}
                 {orders.map((order) => {
                     return (
-                        <div key={order._id} className="flex justify-between">
+                        <div key={order._id} className="flex gap-72">
                             <div>
-                                <p className="text-sm text-gray-400">ID</p>
+                                {/* <p className="text-sm text-gray-400">ID</p> */}
                                 <h1>{order._id}</h1>
                             </div>
                             <div className="flex gap-20">
                                 <div>
-                                    <p className="text-sm text-gray-400">DATE</p>
+                                    {/* <p className="text-sm text-gray-400">DATE</p> */}
                                     <h1>{moment(order.createdAt).format("MM-DD-YYYY")}</h1>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-400">QUANTITY</p>
+                                    {/* <p className="text-sm text-gray-400">QUANTITY</p> */}
                                     <h1>{order.cart.length}</h1>
                                 </div>
                             </div>
