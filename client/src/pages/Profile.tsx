@@ -4,6 +4,7 @@ import defaultProfilePicture from "../assets/default_profile_picture.jpg";
 import { useEffect, useState } from "react";
 import { Order } from "../types/Order";
 import useNotificationContext from "../hooks/useNotificationContext";
+import useProfilePictureContext from "../hooks/useProfileImageContext";
 import moment from "moment";
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -12,27 +13,9 @@ function Profile(): JSX.Element {
     const { logout } = useLogout();
     const { user } = useUserContext();
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [profilePicture, setProfilePicture] = useState<string>("");
     const [orders, setOrders] = useState<Order[]>([]);
     const { setNotificationInfo, setShowNotification } = useNotificationContext();
-
-    useEffect(() => {
-        getProfilePicture();
-    }, []);
-
-    const getProfilePicture = () => {
-        axios
-            .get("/user/image")
-            .then((response) => {
-                console.log(response);
-                setProfilePicture(
-                    `data:${response.data.profileImage.contentType};base64,${response.data.profileImage.data}`
-                );
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+    const { profilePicture, updateProfilePicture } = useProfilePictureContext();
 
     const handleFileSelect = (ev: React.ChangeEvent<HTMLInputElement>) => {
         const file = ev.target.files?.[0] || null;
@@ -48,6 +31,7 @@ function Profile(): JSX.Element {
         axios
             .post("/user/image", formData)
             .then(() => {
+                updateProfilePicture();
                 setShowNotification(true);
                 setNotificationInfo({ message: "Profile picture updated", type: "success" });
             })

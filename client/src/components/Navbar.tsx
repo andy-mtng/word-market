@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
 import useUserContext from "../hooks/useUserContext";
+import { useEffect, useState } from "react";
+import useProfilePictureContext from "../hooks/useProfileImageContext";
+import defaultProfilePicture from "../assets/default_profile_picture.jpg";
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
 function Navbar(): JSX.Element {
     const { user } = useUserContext();
+    const { profilePicture } = useProfilePictureContext();
 
     return (
         <nav className="flex items-center justify-between px-12 py-6">
@@ -39,7 +46,11 @@ function Navbar(): JSX.Element {
                     <div className="display flex gap-4">
                         <li>
                             <Link to="/profile">
-                                <div className="box-border h-10 w-10 rounded-md bg-gray-300"></div>
+                                <img
+                                    className="box-border h-10 w-10 rounded-md bg-gray-300"
+                                    alt="Profile"
+                                    src={profilePicture ? profilePicture : defaultProfilePicture}
+                                />
                             </Link>
                         </li>
                     </div>
