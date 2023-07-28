@@ -23,7 +23,6 @@ export const useLogin = () => {
                     setShowNotification(true);
                     setNotificationInfo({ message: "Successfully logged in", type: "success" });
                     setUser(response.data.user);
-                    localStorage.setItem("user", JSON.stringify(response.data.user));
                     navigate("/");
                 }
             })

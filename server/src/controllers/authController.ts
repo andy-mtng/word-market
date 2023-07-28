@@ -13,9 +13,14 @@ const login = (req: Request, res: Response) => {
                     expiresIn: "3d"
                 });
 
+                // Calculate the expiration date for the cookie
+                const expirationDate = new Date();
+                expirationDate.setDate(expirationDate.getDate() + 3); // 3 days from now
+
                 // Set JWT in browser cookies
                 res.cookie("jwt", token, {
-                    httpOnly: true
+                    httpOnly: true,
+                    expires: expirationDate // Set the expiration date
                 });
 
                 return res.status(200).json({

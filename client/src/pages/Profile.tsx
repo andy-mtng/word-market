@@ -57,9 +57,10 @@ function Profile(): JSX.Element {
         axios
             .get("/orders")
             .then((response) => {
-                console.log(response.data.orders[0].cart);
                 setOrdersLoading(false);
-                setOrders(response.data.orders);
+                if (response.data.orders.length > 0) {
+                    setOrders(response.data.orders);
+                }
             })
             .catch((error: Error) => {
                 console.log(error);
@@ -100,20 +101,18 @@ function Profile(): JSX.Element {
                 </div>
                 <hr className="border-5 w-full border-gray-300"></hr>
                 {ordersLoading && <LoadingIcon />}
+                {orders.length <= 0 && <p>No orders.</p>}
                 {orders.map((order) => {
                     return (
                         <div key={order._id} className="flex gap-72">
                             <div>
-                                {/* <p className="text-sm text-gray-400">ID</p> */}
                                 <h1>{order._id}</h1>
                             </div>
                             <div className="flex gap-20">
                                 <div>
-                                    {/* <p className="text-sm text-gray-400">DATE</p> */}
                                     <h1>{moment(order.createdAt).format("MM-DD-YYYY")}</h1>
                                 </div>
                                 <div>
-                                    {/* <p className="text-sm text-gray-400">QUANTITY</p> */}
                                     <h1>{order.cart.length}</h1>
                                 </div>
                             </div>

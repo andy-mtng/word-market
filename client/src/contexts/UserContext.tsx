@@ -1,6 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-import { Cart } from "../types/Cart";
-import { ProfilePicture } from "../types/ProfilePicture";
 import { User } from "../types/User";
 
 interface User2 {

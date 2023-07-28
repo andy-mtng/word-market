@@ -3,7 +3,6 @@ import UserModel from "../models/UserModel";
 import UserDocument from "../types/UserDocument";
 
 const uploadProfilePicture = (req: Request, res: Response) => {
-    console.log("Uploaded Image", req.file?.buffer);
     if (req.file === undefined) {
         throw new Error("Image is undefined");
     }
