@@ -32,4 +32,39 @@ const getBooks = (req: Request, res: Response) => {
         });
 };
 
-export { getBooks, getBook };
+interface PaginationQuery {
+    page: string;
+    limit: string;
+}
+
+const getPaginatedBooks = (req: Request<{}, {}, {}, PaginationQuery>, res: Response) => {
+    const { page, limit } = req.query;
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+    const skip = (pageNum - 1) * limitNum;
+
+    BookModel.countDocuments()
+        .then((totalBooks) => {
+            return BookModel.find()
+                .skip(skip)
+                .limit(parseInt(limit))
+                .then((books) => {
+                    res.json({
+                        currentPage: pageNum,
+                        totalBooks,
+                        totalPages: Math.ceil(totalBooks / limitNum),
+                        books
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching data:", error);
+                    res.status(500).json({ error: "Internal Server Error" });
+                });
+        })
+        .catch((error) => {
+            console.error("Error counting documents:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        });
+};
+
+export { getBooks, getBook, getPaginatedBooks };
