@@ -26,33 +26,42 @@ function Login(): JSX.Element {
     };
 
     return (
-        <div>
-            <h1>Login</h1>
+        <div className="mx-auto mt-4 w-[350px] border border-gray-200 px-6 py-6 shadow-sm">
+            <h1 className="mb-6 text-2xl font-semibold">Login</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div>
-                    <label htmlFor="email">Email</label>
+                <div className="mb-3 flex flex-col">
+                    <label className="rounded-sm text-sm text-gray-500" htmlFor="email">
+                        Email
+                    </label>
                     <input
-                        className="border border-gray-400 "
+                        className="border border-gray-400 p-1"
                         id="email"
                         {...register("email", { required: true })}
                     />
                 </div>
                 {errors.email && <span>Email is required</span>}
 
-                <div>
-                    <label htmlFor="password">Password</label>
+                <div className="flex flex-col">
+                    <label className="rounded-sm text-sm text-gray-500" htmlFor="password">
+                        Password
+                    </label>
                     <input
                         type="password"
-                        className=" border border-gray-400"
+                        className=" border border-gray-400 p-1"
                         id="password"
                         {...register("password", { required: true })}
                     />
                 </div>
                 {errors.password && <span>Password is required</span>}
 
-                <button type="submit">Login</button>
+                <button
+                    className="mt-8 w-full rounded-sm bg-gray-800 py-2 text-center text-white"
+                    type="submit"
+                >
+                    LOGIN
+                </button>
             </form>
-            <p>
+            <p className="mt-2 text-sm">
                 New to WordMarket? <Link to="/signup">Join now</Link>
             </p>
         </div>
