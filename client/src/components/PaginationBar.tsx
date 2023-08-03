@@ -33,7 +33,11 @@ const PaginationBar = ({ currentPage, totalPages, onPageChange }: PaginationBarP
         <div className="pagination my-8">
             {pageNumbers.map((page, index) => (
                 <button
-                    className="mr-1 h-9 w-9 rounded-sm border border-gray-200 font-semibold"
+                    className={
+                        (page as number) === currentPage
+                            ? "mr-1 h-9 w-9 rounded-sm border border-gray-200 bg-green-700 font-semibold text-white"
+                            : "mr-1 h-9 w-9 rounded-sm border border-gray-200 font-semibold"
+                    }
                     key={index}
                     onClick={() => {
                         onPageChange(page as number);

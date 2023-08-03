@@ -18,7 +18,7 @@ function BookDisplay(props: BookDisplayProps): JSX.Element {
 
     return (
         <div
-            className="flex flex-col gap-1 rounded-md bg-gray-50 px-8 py-4"
+            className="flex flex-col gap-1 rounded-md bg-gray-50 px-8 py-4 transition duration-500 hover:scale-105"
             onClick={() => {
                 navigate(`/books/${id}`);
             }}
