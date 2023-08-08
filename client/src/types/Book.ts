@@ -1,16 +1,4 @@
-interface ProfileImage {
-    data: string;
-    contentType: string;
-}
-
-interface Review {
-    rating: number;
-    user: String;
-    firstName: string;
-    lastName: string;
-    profileImage: ProfileImage;
-    reviewContent: string;
-}
+import { Review } from "./Review";
 
 interface BestSellerRank {
     category: string;

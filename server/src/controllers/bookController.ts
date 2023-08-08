@@ -5,13 +5,19 @@ import BookModel from "../models/BookModel";
 const getBook = (req: Request, res: Response) => {
     const bookId = req.params.id;
     BookModel.findById(bookId)
+        .populate({
+            path: "reviews",
+            populate: {
+                path: "user"
+            }
+        })
         .then((book: BookDocument | null) => {
             if (book === null) {
                 console.log("Book not found");
                 return res.status(404).json({ message: "Book not found" });
             }
 
-            console.log("Successfully found book by its ID:", bookId);
+            console.log("Successfully found book by its ID:", book);
             return res.status(200).json({ message: "Book successfully retrieved", data: book });
         })
         .catch((error: Error) => {
@@ -66,5 +72,20 @@ const getPaginatedBooks = (req: Request<{}, {}, {}, PaginationQuery>, res: Respo
             res.status(500).json({ error: "Internal Server Error" });
         });
 };
+
+// const updateBookRating = (req: Request, res: Response) => {
+//     const bookId = req.query.params;
+
+//     // req.body contains the updated rating
+//     BookModel.findByIdAndUpdate(bookId, req.body)
+//         .then(() => {
+//             console.log("Book rating updated successfully");
+//             res.status(200).json({ message: "Book updated successfully" });
+//         })
+//         .catch((error) => {
+//             console.log("Book rating update failed", error);
+//             res.status(500).json({ error: "Book rating update failed" });
+//         });
+// };
 
 export { getBooks, getBook, getPaginatedBooks };

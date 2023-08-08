@@ -5,6 +5,7 @@ import mongoose, { ConnectOptions } from "mongoose";
 import authRouter from "./routes/authRoutes";
 import bookRouter from "./routes/bookRoutes";
 import cartRouter from "./routes/cartRoutes";
+import reviewRouter from "./routes/reviewRoutes";
 import billingRouter from "./routes/billingRoutes";
 import userRouter from "./routes/userRoutes";
 import orderRouter from "./routes/orderRoutes";
@@ -28,6 +29,7 @@ app.use("/cart", cartRouter);
 app.use("/checkout", billingRouter);
 app.use("/orders", orderRouter);
 app.use("/user", userRouter);
+app.use("/reviews", reviewRouter);
 
 // Connect to database
 mongoose

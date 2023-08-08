@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import mongoose, { Schema, model } from "mongoose";
+import ReviewDocument from "../types/ReviewDocument";
 
-const reviewSchema = new Schema({
+const reviewSchema = new Schema<ReviewDocument>({
     rating: {
         type: Number,
         required: true
@@ -10,20 +10,10 @@ const reviewSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    firstName: {
-        type: String
-    },
-    lastName: {
-        type: String
-    },
-    profileImage: {
-        data: String,
-        contentType: String
-    },
     reviewContent: {
         type: String
     }
 });
 
-const ReviewModel = mongoose.model("Review", reviewSchema);
+const ReviewModel = model<ReviewDocument>("Review", reviewSchema);
 export default ReviewModel;
