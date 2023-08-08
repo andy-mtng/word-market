@@ -1,4 +1,6 @@
 import { createContext, useState, useEffect } from "react";
+import { AiFillCheckCircle } from "react-icons/ai";
+import { BiSolidErrorCircle } from "react-icons/bi";
 
 interface NotificationContextProviderProps {
     children: React.ReactNode;
@@ -29,8 +31,12 @@ const NotificationContextProvider = ({ children }: NotificationContextProviderPr
 
     function Notification(): JSX.Element {
         return (
-            <div className="fixed right-6 top-6 flex gap-2 bg-white">
-                <p>{notificationInfo.type}</p>
+            <div className="fixed right-6 top-6 flex items-center gap-2 rounded-sm border border-gray-200 bg-white px-2 py-1 shadow-sm">
+                {notificationInfo.type === "success" ? (
+                    <AiFillCheckCircle color="green" size={16} />
+                ) : (
+                    <BiSolidErrorCircle color="red" size={16} />
+                )}
                 <p>{notificationInfo.message}</p>
                 <button onClick={clear}>
                     <svg
