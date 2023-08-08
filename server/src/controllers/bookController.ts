@@ -73,19 +73,20 @@ const getPaginatedBooks = (req: Request<{}, {}, {}, PaginationQuery>, res: Respo
         });
 };
 
-// const updateBookRating = (req: Request, res: Response) => {
-//     const bookId = req.query.params;
+const getPopularBooks = (req: Request, res: Response) => {
+    const numberOfTopBooksToRetrieve = 6;
 
-//     // req.body contains the updated rating
-//     BookModel.findByIdAndUpdate(bookId, req.body)
-//         .then(() => {
-//             console.log("Book rating updated successfully");
-//             res.status(200).json({ message: "Book updated successfully" });
-//         })
-//         .catch((error) => {
-//             console.log("Book rating update failed", error);
-//             res.status(500).json({ error: "Book rating update failed" });
-//         });
-// };
+    BookModel.find({})
+        .sort({ rating: -1 }) // Sort by "rating" in descending order
+        .limit(numberOfTopBooksToRetrieve) // Limit to the top 5 books
+        .exec()
+        .then((topBooks) => {
+            res.status(200).json({ topBooks: topBooks });
+        })
+        .catch((error) => {
+            console.log("Error retrieving top books", error);
+            res.status(500).json({ error: "Error retrieving top books" });
+        });
+};
 
-export { getBooks, getBook, getPaginatedBooks };
+export { getBooks, getBook, getPaginatedBooks, getPopularBooks };
